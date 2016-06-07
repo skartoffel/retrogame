@@ -1,0 +1,30 @@
+{
+  "manifest_version": 2,
+  "name": "RETROGame",
+  "description": "An extension to enhance the game play of OGame (retro)",
+  "version": "0.1",
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://ogame1304.de/game/index.php*"
+      ],
+      "css": [
+        "retrogame.css"
+      ],
+      "js": [
+        "library/jquery-2.2.3.min.js",
+        "library/jquery-dateFormat.min.js",
+        "retrogame.js"
+      ]
+    }
+  ],
+  "permissions": [
+    "storage",
+    "activeTab",
+    "https://ajax.googleapis.com/"
+  ]
+}
