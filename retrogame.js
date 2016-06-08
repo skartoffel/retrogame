@@ -10,9 +10,38 @@ $(function () {
 
         },
         doAction: function (sPage, sMode) {
+            if (sPage === 'flotten1') {
+                this.showRecallTimes();
+            }
+
             if (sPage === 'flotten2') {
                 this.showFleetTimes();
             }
+        },
+        showRecallTimes: function () {
+            var that = this;
+            var aButtons = $('input[value="recall"]');
+
+            var updateButtons = function () {
+                aButtons.each(function (idx) {
+                    var oTR = $(this).closest('tr');
+                    var oTHDeparture = oTR.children('th:nth-child(5)');
+                    var sDepartureTime = oTHDeparture.text();
+
+                    if (sDepartureTime.match(/^\w{3}\s\w{3}\s\d{1,2}\s\d{1,2}:\d{2}:\d{2}$/)) {
+                        // assuming that this means it takes place in the current year
+                        var dNow = new Date();
+                        var dDeparture = $.format.parseDate(sDepartureTime + ' CET ' + dNow.getFullYear());
+                        var dReturn = new Date(dNow.getTime() * 2 - dDeparture.date);
+                        var sReturn = that._formatDate(dReturn);
+                        $(this).val('recall (' + sReturn + ')')
+                    }
+                });
+
+                setTimeout(updateButtons, 500);
+            };
+
+            updateButtons();
         },
         showFleetTimes: function () {
             var oTarget = $('#duration');
@@ -35,6 +64,20 @@ $(function () {
                 characterData: true,
                 subtree: true
             });
+        },
+        _calcRecallTimes() {
+
+        },
+        _formatDate(dDate) {
+            var dNow = new Date();
+            var sFormat = 'H:mm:ss';
+            if (dDate.getFullYear() !== dNow.getFullYear()) {
+                sFormat = 'E d yyy ' + sFormat;
+            } else if (dDate.getDate() !== dNow.getDate()) {
+                sFormat = 'E d ' + sFormat;
+            }
+
+            return $.format.date(dDate, sFormat);
         },
         _calcFleetTimes: function (oTarget) {
 
