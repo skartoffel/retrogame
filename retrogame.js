@@ -10,6 +10,11 @@ $(function () {
 
         },
         doAction: function (sPage, sMode) {
+
+            if (sPage === 'overview') {
+                this.showEventTimes();
+            }
+
             if (sPage === 'flotten1') {
                 this.showRecallTimes();
             }
@@ -17,6 +22,18 @@ $(function () {
             if (sPage === 'flotten2') {
                 this.showFleetTimes();
             }
+        },
+        showEventTimes: function () {
+            var that = this;
+            var aCountdowns = $('div[id^="bxx"]');
+
+            aCountdowns.each(function(idx) {
+                var sDuration = $(this).attr('title');
+                var iDurationInMS = +sDuration * 1000;
+                var dEvent = new Date(Date.now() + iDurationInMS);
+                var sEvent = that._formatDate(dEvent);
+                $(this).parent().append('<div class="rg-stamp">' + sEvent + '</div>');
+            })
         },
         showRecallTimes: function () {
             var that = this;

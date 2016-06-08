@@ -5,3 +5,9 @@
 #content #rg-return {
     color: #0a0;
 }
+
+#content .rg-stamp {
+    font-weight: normal;
+    font-size: 1rem;
+    color: #222;
+}
